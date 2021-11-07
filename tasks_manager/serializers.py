@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from .models import Task, User
+from .models import Task
+from django.contrib.auth.models import User
 
 
 class TaskSerializer(serializers.HyperlinkedModelSerializer):
@@ -8,7 +9,9 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
 
     @staticmethod
     def get_owner_name(obj):
-        return '{} {}'.format(obj.owner.first_name, obj.owner.last_name)
+        if obj.owner:  # It's allowed for task to have no owner
+            return '{} {}'.format(obj.owner.first_name, obj.owner.last_name)
+        return None
 
     owner_url = serializers.HyperlinkedIdentityField(view_name='user-detail')
 

@@ -22,6 +22,16 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'], url_name="tasks")
     def tasks(self, request, pk):
+        """Returns ALL tasks related to given user id"""
+        single_user = User.objects.get(id=pk)
+        tasks = single_user.task_set.all()
+        serializer = TaskSerializer(tasks, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['get'], url_name="me", url_path="me/tasks")
+    def my_tasks(self, request):
+        """Returns ALL tasks related to authorized user"""
+        pk = request.user.id
         single_user = User.objects.get(id=pk)
         tasks = single_user.task_set.all()
         serializer = TaskSerializer(tasks, many=True, context={'request': request})

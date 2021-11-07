@@ -1,18 +1,22 @@
 from rest_framework import viewsets, status
-
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 from .serializers import UserSerializer, TaskSerializer
 from .models import User, Task
 
 
 class TaskViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+
     queryset = Task.objects.all().order_by('id')
     serializer_class = TaskSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+
     queryset = User.objects.all().order_by('id')
     serializer_class = UserSerializer
 

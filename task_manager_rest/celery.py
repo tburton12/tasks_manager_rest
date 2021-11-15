@@ -20,6 +20,10 @@ app.conf.beat_schedule = {
         "task": "email_notifier.tasks.send_daily_email",
         "schedule": crontab(hour=8, minute=0)
     },
+    'every-5-minutes': {
+        'task': 'email_notifier.tasks.send_deadline_passed_email',
+        'schedule': crontab(hour=0, minute='*/5'),
+    },
 }
 
 # Load task modules from all registered Django apps.

@@ -9,6 +9,8 @@ class Task(models.Model):
     # SET_NULL because if user is deleted, someone else needs to complete task anyway
     owner = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     deadline = models.DateTimeField()
+    # Indicates if email notification (sent when deadline is exceeded) was already sent (sending just once)
+    notification_sent = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
